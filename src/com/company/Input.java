@@ -1,16 +1,15 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Map;
 import java.util.Scanner;
 
 public class Input {
-   static Group group=new Group();
-  static   Scanner in=new Scanner(System.in);
+    Scanner in=new Scanner(System.in);
+    Cache cache=new Cache();
 
-    public static String checkGroupName(String groupName) {
-        for (int i = 0; i < Main.list.size(); i++) {
+    public String checkGroupName(String groupName) {
+        for (int i = 0; i < Main.groupList.size(); i++) {
             Map.Entry<String, Group> groupEntry =Main.groupList.get(i);
             Group res = groupEntry.getValue();
             if (!res.getGroupName().equals(groupName)) {
@@ -23,9 +22,9 @@ public class Input {
             return groupName;
 
     }
-    public static String checkUserId(String userId){
+    public String checkUserId(String userId){
         for(int i=0;i<Main.userList.size();i++) {
-            Map.Entry<String, User> user =Main. userList.get(i);
+            Map.Entry<String, User> user =Main.userList.get(i);
             User res=user.getValue();
             if (!res.getUserId().equals(userId)) {
                 System.out.println("No such user found");
@@ -36,36 +35,29 @@ public class Input {
         }
        return userId;
     }
-    public static void addOrRemove(String decision,String userid){
-        for(int i=0;i<Main.userList.size();i++) {
-            Map.Entry<String, User> user =Main. userList.get(i);
-            User res=user.getValue();
-            if(res.getUserId().equals(userid)){
-                    if(decision.equals("Add")){
-                       System.out.println("user"+user);
-                       Main.list.add(res);
-                       group.setGroupMember(Main.list);
-                        System.out.println("User is Successfully added");
-                        System.out.println(Main.list);
-                     }
-                      else if(decision.equals("Remove")){
-                          if(Main.list!=null&&res!=null){
-                            Main.list.remove(res);
-                            group.setGroupMember(Main.list);
-                            System.out.println("User is Successfully removed");
-                            System.out.println(Main.list);
-                          }
-                      }
+    public boolean validityCheck(String email) {
+        int i = 0;
+        if(email.indexOf('@')!=-1&&cache.getUserMap().get(email)==null){
+            if (email.charAt(i) >= 'a' && email.charAt(i) <= 'z' || (email.charAt(i) <= 0 && email.charAt(i) >= 9)) {
+                i++;
+            } else {
+                return false;
             }
+            return true;
+        }else {
+            return false;
         }
     }
-    public static String emailCheck(String email){
-        if (!Mail.emailCheck(email)) {
+    public String emailCheck(String email){
+        if (!validityCheck(email)) {
             System.out.println("Invalid email.An valid email should be in Lowercase with one @ symbol");
             System.out.println("Enter valid email Id");
             String mail=in.next();
             emailCheck(mail);
         }
         return email;
+    }
+    public void close(){
+        in.close();
     }
 }

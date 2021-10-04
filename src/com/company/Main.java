@@ -1,14 +1,12 @@
 package com.company;
-
 import java.util.*;
-
 public class Main {
-    static Map<String, User> userMap = new HashMap<>();
-    static Map<String,Group> groupMap=new HashMap<>();
-    static List<Map.Entry<String, Group>> groupList = new ArrayList<>(Main.groupMap.entrySet());
-    static  List<Map.Entry<String,User>> userList =new ArrayList<>(Main.userMap.entrySet());
- static List<User> list=new ArrayList<>();
+   static Cache cache=new Cache();
+static  List<Map.Entry<String, Group>> groupList = new ArrayList<>(cache.getGroupMap().entrySet());
+   static List<Map.Entry<String,User>> userList =new ArrayList<>(cache.getUserMap().entrySet());
+
     public static void main(String[] args) {
+
         try (Scanner in = new Scanner(System.in)) {
             while (true) {
                 System.out.println("1.Create User");
@@ -25,27 +23,29 @@ public class Main {
                 int choice = in.nextInt();
                 Group group=new Group();
                 User user = new User();
+                Mail mail=new Mail();
+                Input input=new Input();
+
                 switch (choice) {
                     case 1:
                             System.out.println("Enter the User ID");
                             in.nextLine();
-                           String userId = in.nextLine();
+                            String userId = in.nextLine();
                             System.out.println("Enter the email");
-                            String email = Input.emailCheck(in.nextLine());
+                            String email = input.emailCheck(in.nextLine());
                             System.out.println("Enter Password");
                             String password = in.nextLine();
                             user.setUserId(userId);
                             user.setEmail(email);
                             user.setPassword(password);
-                            Mail.accountCreation(user);
-                            System.out.println(userMap);
+                            mail.accountCreation(user);
                         break;
                     case 2:
                         System.out.println("Enter the Group Name");
                         in.nextLine();
                         String name=in.nextLine();
                         System.out.println("Enter the Email id");
-                        String groupEmail=Input.emailCheck(in.nextLine());
+                        String groupEmail=input.emailCheck(in.nextLine());
                         System.out.println("Enter the password");
                         String groupPassword=in.nextLine();
                         System.out.println("Enter the Description");
@@ -54,18 +54,17 @@ public class Main {
                         group.setGroupEmailId(groupEmail);
                         group.setPassword(groupPassword);
                         group.setDescription(description);
-                        Mail.groupCreation(group);
-                        System.out.println(groupMap);
+                        mail.groupCreation(group);
                         break;
                     case 3:
 
                         System.out.println("Enter Group name");
-                        String groupName=Input.checkGroupName(in.next());
+                        String groupName=input.checkGroupName(in.next());
                         System.out.println("Enter User Id");
-                        String userid=Input.checkUserId(in.next());
+                        String userid=input.checkUserId(in.next());
                         System.out.println("Add/Remove");
                         String decision=in.next();
-                        Input.addOrRemove(decision,userid);
+                        mail.addOrRemove(decision,userid);
                         break;
 
                     case 10:

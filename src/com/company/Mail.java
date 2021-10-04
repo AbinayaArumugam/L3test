@@ -1,40 +1,59 @@
 package com.company;
 
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class Mail {
-
-    public static void accountCreation(User user) {
+Cache cache=new Cache();
+Group group=new Group();
+    List<User> list=new ArrayList<>();
+    public void accountCreation(User user) {
         String email = user.getEmail();
-        if (Main.userMap.get(email) == null) {
-            Main.userMap.put(email, user);
+        if (cache.getUserMap().get(email) == null) {
+           cache.createUserMap(email,user);
+            System.out.println(cache.getUserMap());
             System.out.println("Account is successfully created");
         } else {
             System.out.println("Account already exists");
         }
     }
-    public static void groupCreation(Group group){
+    public void groupCreation(Group group){
        String  email=group.getGroupEmailId();
-       if(Main.groupMap.get(email)==null){
-           Main.groupMap.put(email,group);
+       if(cache.getGroupMap().get(email)==null){
+          cache.createGroupMap(email,group);
+           System.out.println(cache.groupMap);
            System.out.println("Group is Successfully created");
        } else {
            System.out.println("Group Name already exists");
        }
     }
 
-    public static boolean emailCheck(String email) {
-        int i = 0;
-        if(email.indexOf('@')!=-1&&Main.userMap.get(email)==null){
-            if (email.charAt(i) >= 'a' && email.charAt(i) <= 'z' || (email.charAt(i) <= 0 && email.charAt(i) >= 9)) {
-                i++;
-            } else {
-                return false;
+
+    public void addOrRemove(String decision,String userid){
+        for(int i=0;i<Main.userList.size();i++) {
+            Map.Entry<String, User> user =Main.userList.get(i);
+            User res=user.getValue();
+            if(res.getUserId().equals(userid)){
+                if(decision.equals("Add")){
+                    System.out.println("user"+user);
+                    list.add(res);
+                    group.setGroupMember(list);
+                    System.out.println("User is Successfully added");
+                    System.out.println(list);
+                }
+                else if(decision.equals("Remove")){
+                    if(list!=null){
+                        list.remove(res);
+                        group.setGroupMember(list);
+                        System.out.println("User is Successfully removed");
+                        System.out.println(list);
+                    }
+                }
             }
-            return true;
-        }else {
-            return false;
         }
     }
+
 
 }

@@ -1,8 +1,4 @@
 package com.company;
-
-import java.util.Collection;
-import java.util.Map;
-
 public class User  {
     private String userId;
     private String email;
